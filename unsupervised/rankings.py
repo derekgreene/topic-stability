@@ -86,7 +86,6 @@ class RankingSetAgreement:
 		for (row,col) in results:
 			score += self.S[row,col]
 		score /= len(results)
-		#print "SCORE=%.2f POTENTIAL=%.2f" % (score,h.get_total_potential())
 		return (score, results)
 
 # --------------------------------------------------------------

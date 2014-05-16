@@ -21,3 +21,4 @@ Tested with Python 2.7.x and requiring the following packages, which are availab
 The following dependency is bundled with this project:
 - hungarian-algorithm 2013-11-03 (https://github.com/tdedecko/hungarian-algorithm)
  
+To run the LDA tools, an installation of Mallet 2.0 is required, which is available [here](http://mallet.cs.umass.edu/).

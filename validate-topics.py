@@ -24,7 +24,6 @@ def main():
 
 	partition_validator = unsupervised.validation.PartitionValidator( classes, doc_ids )
 	term_validator = unsupervised.validation.TermValidator( X, terms, class_partition )
-	diversity_validator = unsupervised.validation.DiversityValidator()
 	term_top_values = [ 10, 20, 50, 100 ]
 	
 	# Process each directory
@@ -57,11 +56,9 @@ def main():
 			# evaluate topic terms
 			(term_rankings,labels) = unsupervised.util.load_term_rankings( path_pair[0] )
 			term_results = term_validator.evaluate( term_rankings, term_top_values )
-			# evaluate topic term diversity
-			diversity_results = diversity_validator.evaluate( term_rankings, term_top_values )
 			# add all results to the collection
 			experiment_key = os.path.splitext( os.path.basename( path_pair[0] ) )[0]
-			collection.add( experiment_key, dict( partition_results.items() + term_results.items() + diversity_results.items() )  )
+			collection.add( experiment_key, dict( partition_results.items() + term_results.items() )  )
 		# finished this directory, so print results for it
 		print collection.create_table( precision = options.precision )
 		mean_collection.add( os.path.basename(result_dir_path), collection.aggregate_scores()[0] )
