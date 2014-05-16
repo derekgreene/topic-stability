@@ -1,4 +1,4 @@
-import math, operator
+import math
 import numpy as np
 import hungarian
 
@@ -143,7 +143,11 @@ def format_term_rankings( term_rankings, labels = None, top = 10 ):
 	for pos in range(top):
 		row = [ str(pos+1) ]
 		for ranking in term_rankings:
-			row.append( ranking[pos] ) 
+			# have we run out of terms?
+			if len(ranking) <= pos:
+				row.append( "" ) 
+			else:
+				row.append( ranking[pos] ) 
 		tab.add_row( row )
 	return tab
 
