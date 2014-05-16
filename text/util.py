@@ -2,7 +2,7 @@ import codecs, os, os.path, re
 from sklearn.externals import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-def preprocess( docs, stopwords, min_df = 3, min_term_length = 2, ngram_range = (1,1) ):
+def preprocess( docs, stopwords, min_df = 3, min_term_length = 2, ngram_range = (1,1), apply_tfidf = True, apply_norm = True ):
 	"""
 	Preprocess a list containing text documents stored as strings.
 	"""
@@ -13,7 +13,11 @@ def preprocess( docs, stopwords, min_df = 3, min_term_length = 2, ngram_range = 
 		return [x.lower() for x in token_pattern.findall(s) if (len(x) >= min_term_length and x[0].isalpha() ) ]
 
 	# Build the Vector Space Model, apply TF-IDF and normalize lines to unit length all in one call
-	tfidf = TfidfVectorizer(stop_words=stopwords, lowercase=True, strip_accents="unicode", tokenizer=custom_tokenizer, use_idf=True, norm="l2", min_df = min_df, ngram_range = ngram_range) 
+	if apply_norm:
+		norm_function = "l2"
+	else:
+		norm_function = None
+	tfidf = TfidfVectorizer(stop_words=stopwords, lowercase=True, strip_accents="unicode", tokenizer=custom_tokenizer, use_idf=apply_tfidf, norm=norm_function, min_df = min_df, ngram_range = ngram_range) 
 	X = tfidf.fit_transform(docs)
 	print "Built matrix: rows: %d, terms: %d" % X.shape
 	terms = []
