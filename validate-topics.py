@@ -50,9 +50,10 @@ def main():
 			# evaluate partition
 			if path_pair[1] is None:
 				print "Warning: no partition available for", path_pair[0]
-				continue
-			partition, doc_ids = unsupervised.util.load_partition( path_pair[1] )
-			partition_results = partition_validator.evaluate( partition, doc_ids )
+				partition_results = {}
+			else:
+				partition, doc_ids = unsupervised.util.load_partition( path_pair[1] )
+				partition_results = partition_validator.evaluate( partition, doc_ids )
 			# evaluate topic terms
 			(term_rankings,labels) = unsupervised.util.load_term_rankings( path_pair[0] )
 			term_results = term_validator.evaluate( term_rankings, term_top_values )
