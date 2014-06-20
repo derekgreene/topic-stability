@@ -24,7 +24,7 @@ class SklNMF:
 		self.H = None
 		model = decomposition.NMF(init=self.init_strategy, n_components=k, max_iter=self.max_iters)
 		self.W = model.fit_transform(X)
-		self.H = model.components_
+		self.H = model.components_			
 		
 	def rank_terms( self, topic_index, top = -1 ):
 		"""

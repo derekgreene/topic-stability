@@ -7,7 +7,6 @@ import text.util, unsupervised.util, unsupervised.validation
 
 def main():
 	parser = OptionParser(usage="usage: %prog [options] corpus_file input_directory1 input_directory2 ...")
-	#parser.add_option("-o", "--outfile", action="store", type="string", dest="out_path", help="output file path", default=None)
 	parser.add_option("-p", "--precision", action="store", type="int", dest="precision", help="precision for results", default=2)
 	(options, args) = parser.parse_args()
 	if( len(args) < 2 ):
