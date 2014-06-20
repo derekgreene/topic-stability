@@ -15,8 +15,9 @@ This repository contains a Python reference implementation of the above approach
 Tested with Python 2.7.x and requiring the following packages, which are available via PIP:
  - Required: numpy >= 1.8.0 (http://www.numpy.org/)
  - Required: scikit-learn >= 0.14 (http://scikit-learn.org/stable/)
- - Optional: nimfa >= 1.0 (http://nimfa.biolab.si/)
- - Optional: prettytable >= 0.7.2 (https://code.google.com/p/prettytable/)
+ - Required for LDA: scipy >= 0.13 (http://www.scipy.org/)
+ - Required for NMF: nimfa >= 1.0 (http://nimfa.biolab.si/)
+ - Required for utility tools: prettytable >= 0.7.2 (https://code.google.com/p/prettytable/)
 
 The following dependency is bundled with this project:
 - hungarian-algorithm 2013-11-03 (https://github.com/tdedecko/hungarian-algorithm)
