@@ -6,7 +6,6 @@ Despite the many [topic modeling algorithms](http://en.wikipedia.org/wiki/Topic_
 
 	How Many Topics? Stability Analysis for Topic Models (2014)
 	Derek Greene, Derek O'Callaghan, Pádraig Cunningham
-	Proc. European Conference on Machine Learning (ECML'14)
 	http://arxiv.org/abs/1404.4606	
 	
 This repository contains a Python reference implementation of the above approach.

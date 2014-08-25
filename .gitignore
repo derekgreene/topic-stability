@@ -1,3 +1,7 @@
 sample/
 mallet/
 *.pyc
+
+pool-terms.py
+
+tag-text.py
