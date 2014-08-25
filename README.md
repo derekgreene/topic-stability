@@ -32,12 +32,12 @@ Before apply topic modeling to a corpus, the first step is to pre-process the co
 
 The output will be a number of binary files, with the main corpus file being named 'sample.pkl'.
 
-If we are interested in applying topic modelling based on Non-negative Matrix Factorization (NMF), we next generate a *reference* set of topics on the pre-processed corpus by using the script 'reference-nmf.py'.  Our initial estimate for a range for the number of topics ($k$) for our corpus is between 2 and 8.
+If we are interested in applying topic modelling based on Non-negative Matrix Factorization (NMF), we next generate a *reference* set of topics on the pre-processed corpus by using the script 'reference-nmf.py'.  Our initial estimate for a range for the number of topics (*k*) for our corpus is between 2 and 8.
 
 	python reference-nmf.py sample.pkl --kmin 2 --kmax 8 -o reference-nmf/
 
-The output of the process above will be 7 sub-directories of 'reference-nmf', each containing a reference topic model for a different value of $k$.
+The output of the process above will be 7 sub-directories of 'reference-nmf', each containing a reference topic model for a different value of *k*.
 
-Next, we generate a set of 50 "standard" topic models for each value of $k$ using 'generate-nmf.py'. Again we specify the range of candidates values for $k$ to be [2,8].
+Next, we generate a set of 50 "standard" topic models for each value of *k* using 'generate-nmf.py'. Again we specify the range of candidates values for *k* to be [2,8].
 	
 	python generate-nmf.py sample.pkl --kmin 2 --kmax 8 -r 50 -o topic-nmf/
