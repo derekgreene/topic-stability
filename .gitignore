@@ -5,3 +5,5 @@ mallet/
 pool-terms.py
 
 tag-text.py
+
+export-terms.py
