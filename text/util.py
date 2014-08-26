@@ -19,7 +19,6 @@ def preprocess( docs, stopwords, min_df = 3, min_term_length = 2, ngram_range = 
 		norm_function = None
 	tfidf = TfidfVectorizer(stop_words=stopwords, lowercase=True, strip_accents="unicode", tokenizer=custom_tokenizer, use_idf=apply_tfidf, norm=norm_function, min_df = min_df, ngram_range = ngram_range) 
 	X = tfidf.fit_transform(docs)
-	print "Built matrix: rows: %d, terms: %d" % X.shape
 	terms = []
 	# store the vocabulary map
 	v = tfidf.vocabulary_
@@ -47,18 +46,13 @@ def save_corpus( out_prefix, X, terms, doc_ids, classes ):
 	Save a pre-processed scikit-learn corpus and associated metadata using Joblib.
 	"""
 	matrix_outpath = "%s.pkl" % out_prefix 
-	print "Saving corpus to %s ..."  %( matrix_outpath )
 	joblib.dump((X,terms,doc_ids,classes), matrix_outpath ) 
 
 def load_corpus( in_path ):
 	"""
 	Load a pre-processed scikit-learn corpus and associated metadata using Joblib.
 	"""
-	print "Loading corpus from %s ..." % in_path
 	(X,terms,doc_ids,classes) = joblib.load( in_path )
-	print "Read %s document-term matrix, dictionary of %d terms, list of %d document IDs" % ( str(X.shape), len(terms), len(doc_ids) )
-	if not classes is None:
-		print "Ground truth (%d): %s" % ( len(classes), classes.keys() )
 	return (X, terms, doc_ids, classes)
 
 

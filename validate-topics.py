@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os, os.path, sys
+import logging as log
 from optparse import OptionParser
 import text.util, unsupervised.util, unsupervised.validation
 
@@ -8,9 +9,11 @@ import text.util, unsupervised.util, unsupervised.validation
 def main():
 	parser = OptionParser(usage="usage: %prog [options] corpus_file input_directory1 input_directory2 ...")
 	parser.add_option("-p", "--precision", action="store", type="int", dest="precision", help="precision for results", default=2)
+	parser.add_option('-d','--debug',type="int",help="Level of log output; 0 is less, 5 is all", default=3)
 	(options, args) = parser.parse_args()
 	if( len(args) < 2 ):
 		parser.error( "Must specify at least a corpus and one input direct containing topic modeling results" )	
+	log.basicConfig(level=max(50 - (options.debug * 10), 10), format='%(asctime)-18s %(levelname)-10s %(message)s', datefmt='%d/%m/%Y %H:%M',)
 
 	# Read the corpus
 	corpus_path = args[0]
