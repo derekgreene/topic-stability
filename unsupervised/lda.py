@@ -1,5 +1,5 @@
-import os, os.path
-import tempfile
+import os, os.path, tempfile
+import logging as log
 from subprocess import call
 import numpy as np
 from scipy.stats.mstats import gmean
@@ -8,7 +8,7 @@ class MalletLDA:
 	"""
 	Wrapper class for Mallet. Requires that a binary version of Mallet 2.0 is available locally.
 	"""
-	def __init__( self, mallet_path, top = 100, seed = 1000, max_iters = 1000, alpha = 10.0, beta = 0.01, reweight_terms = False ):
+	def __init__( self, mallet_path, top = 100, seed = 1000, max_iters = 1000, alpha = 10.0, beta = 0.01, rerank_terms = False ):
 		# settings
 		self.mallet_path = mallet_path
 		self.max_iters = max_iters
@@ -18,7 +18,7 @@ class MalletLDA:
 		self.lda_alpha = alpha
 		self.lda_beta = beta
 		self.optimize_interval = 10
-		self.reweight_terms = reweight_terms
+		self.rerank_terms = rerank_terms
 		# state
 		self.partition = None
 
@@ -39,11 +39,11 @@ class MalletLDA:
 		if not ( os.path.exists( mallet_terms_path ) and os.path.exists( mallet_docs_path ) and os.path.exists( mallet_weights_path ) ):
 			raise Exception("Error: Failed to correctly run Mallet")
 		# any pre-processing required?
-		if self.reweight_terms:
-			self.topic_rankings = self.__reweight_terms( X.shape[1], k, mallet_weights_path )
+		if self.rerank_terms:
+			self.topic_rankings = self.__rerank_terms( X.shape[1], k, mallet_weights_path )
 		else:
 			self.topic_rankings = self.__parse_topics( mallet_terms_path )
-		print "Generated ranking set with %d topic rankings" % len(self.topic_rankings)
+		log.debug( "Generated ranking set with %d topic rankings" % len(self.topic_rankings) )
 		self.partition =  self.__parse_document_weights( X.shape[0], mallet_docs_path )
 
 	def rank_terms( self, topic_index, top = -1 ):
@@ -65,7 +65,7 @@ class MalletLDA:
 		"""
 		Write documents to temporary file, for parsing by Mallet.
 		"""
-		print "Writing temporary files to", dir_tmp
+		log.debug( "Writing temporary files to", dir_tmp )
 		# Write documents, one per line
 		corpus_path = os.path.join( dir_tmp, "corpus.txt" )
 		f = open( corpus_path, "w")
@@ -87,10 +87,9 @@ class MalletLDA:
 		"""
 		Run the Mallet pre-processing step.
 		"""
-		print "Importing data into Mallet format... "
+		log.debug( "Importing data into Mallet format... " )
 		mallet_data_path = os.path.join( dir_tmp, "corpus.mallet" )
 		mallet_cmd = "%s import-file --keep-sequence --token-regex '\S+' --input %s --output %s" % ( self.mallet_path, corpus_path, mallet_data_path )
-		#print mallet_cmd
 		call(mallet_cmd, shell=True)
 		return mallet_data_path
 
@@ -131,7 +130,7 @@ class MalletLDA:
 			'--random-seed',
 			self.seed
 			]
-		print "Running Mallet (k=%d alpha=%.3f beta=%.3f optimize_interval=%d threads=%d seed=%s)... " % ( k, self.lda_alpha, self.lda_beta, self.optimize_interval, self.num_threads, self.seed )
+		log.debug( "Running Mallet (k=%d alpha=%.3f beta=%.3f optimize_interval=%d threads=%d seed=%s)... " % ( k, self.lda_alpha, self.lda_beta, self.optimize_interval, self.num_threads, self.seed ) )
 		mallet_cmd = ' '.join([str(x) for x in mallet_args])
 		#print mallet_cmd
 		call(mallet_cmd, shell=True)
@@ -169,7 +168,7 @@ class MalletLDA:
 				partition[doc_index] = best_topic_index
 		return partition
 
-	def __reweight_terms( self, num_terms, k, mallet_weights_path, eps = 1e-9 ):
+	def __rerank_terms( self, num_terms, k, mallet_weights_path, eps = 1e-9 ):
 		"""
 		Implements the term re-weighting method proposed by Blei and Lafferty.
 		"""
