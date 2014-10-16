@@ -63,7 +63,7 @@ def main():
 			for fpath in find_documents( in_path ):
 				filepaths.append( fpath )
 		else:
-			if filename.startswith(".") or filename.startswith("_"):
+			if in_path.startswith(".") or in_path.startswith("_"):
 				continue
 			filepaths.append( in_path )
 	log.info( "Found %d documents to parse" % len(filepaths) )
