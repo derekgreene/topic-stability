@@ -43,8 +43,8 @@ def read_text( in_path ):
 
 def main():
 	parser = OptionParser(usage="usage: %prog [options] dir1 dir2 ...")
-	parser.add_option("--df", action="store", type="int", dest="min_df", help="minimum number of documents for a term to appear", default=20)
 	parser.add_option("-o", action="store", type="string", dest="prefix", help="output prefix for corpus files", default=None)
+	parser.add_option("--df", action="store", type="int", dest="min_df", help="minimum number of documents for a term to appear", default=20)
 	parser.add_option("--tfidf", action="store_true", dest="apply_tfidf", help="apply TF-IDF term weight to the document-term matrix")
 	parser.add_option("--norm", action="store_true", dest="apply_norm", help="apply unit length normalization to the document-term matrix")
 	parser.add_option("--minlen", action="store", type="int", dest="min_doc_length", help="minimum document length (in characters)", default=50)
@@ -109,7 +109,7 @@ def main():
 		stopwords = text.util.load_stopwords(options.stoplist_file )
 	log.info( "Pre-processing data (%d stopwords, tfidf=%s, normalize=%s, min_df=%d) ..." % (len(stopwords), options.apply_tfidf, options.apply_norm, options.min_df) )
 	(X,terms) = text.util.preprocess( docs, stopwords, min_df = options.min_df, apply_tfidf = options.apply_tfidf, apply_norm = options.apply_norm )
-	log.info( "Built matrix: rows: %d, terms: %d" % X.shape )
+	log.info( "Built document-term matrix: %d documents, %d terms" % (X.shape[0], X.shape[1]) )
 	
 	# Store the corpus
 	prefix = options.prefix
