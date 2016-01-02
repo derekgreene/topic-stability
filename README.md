@@ -11,11 +11,11 @@ Despite the many [topic modeling algorithms](http://en.wikipedia.org/wiki/Topic_
 This repository contains a Python reference implementation of the above approach.
 
 ### Dependencies
-Tested with Python 2.7.x and requiring the following packages, which are available via PIP:
+Tested with Python 2.7 and Python 3.5, and requiring the following packages, which are available via PIP:
 
 * Required: [numpy >= 1.8.0](http://www.numpy.org/)
 * Required: [scikit-learn >= 0.14](http://scikit-learn.org/stable/)
-* Required for NMF: [nimfa >= 1.0](http://nimfa.biolab.si/)
+* Required for NMF: [nimfa >= 1.2.x](http://nimfa.biolab.si/)
 * Required for LDA and SKM: [scipy >= 0.13](http://www.scipy.org/)
 * Required for utility tools: [prettytable >= 0.7.2](https://code.google.com/p/prettytable/)
 

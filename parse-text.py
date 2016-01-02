@@ -89,7 +89,7 @@ def main():
 			continue
 		docs.append(body)	
 		doc_ids.append(doc_id)	
-		if not classes.has_key( label ):
+		if label not in classes:
 			classes[label] = set()
 			label_count[label] = 0
 		classes[label].add(doc_id)

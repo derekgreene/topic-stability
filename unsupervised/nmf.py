@@ -48,14 +48,13 @@ class NimfaNMF:
 	"""
 	Wrapper class backed by the Nimfa package NMF implementation.
 	"""
-	def __init__( self, max_iters = 100, init_strategy = "random", update = "euclidean", method = "lsnmf" ):
+	def __init__( self, max_iters = 100, init_strategy = "random", update = "euclidean" ):
 		self.max_iters = max_iters
 		self.init_strategy = init_strategy
 		self.W = None
 		self.H = None
 		self.update = update
 		self.test_conv = 10
-		self.method = method
 
 	def apply( self, X, k = 2 ):
 		"""
@@ -69,8 +68,8 @@ class NimfaNMF:
 			objective = "fro"
 		else:
 			objective = "div"
-		alg = nimfa.mf(X, method = self.method, max_iter = self.max_iters, rank = k, seed = self.init_strategy, update = self.update, objective = objective, test_conv = self.test_conv ) 
-		res = nimfa.mf_run(alg)
+		lsnmf = nimfa.Lsnmf(X, max_iter = self.max_iters, rank = k, seed = self.init_strategy, update = self.update, objective = objective, test_conv = self.test_conv ) 
+		res = lsnmf()
 		# TODO: fix
 		try:
 			self.W = res.basis().todense() 

@@ -13,6 +13,7 @@ def main():
 	parser = OptionParser(usage="usage: %prog [options] ranking_file1 ranking_file2 ...")
 	parser.add_option("-t", "--top", action="store", type="int", dest="top", help="number of top terms to show", default=10)
 	parser.add_option('-d','--debug',type="int",help="Level of log output; 0 is less, 5 is all", default=3)
+	parser.add_option("-l","--long", action="store_true", dest="long_display", help="long format display")
 	(options, args) = parser.parse_args()
 	if( len(args) < 1 ):
 		parser.error( "Must specify at least one ranking set file" )
@@ -24,7 +25,10 @@ def main():
 		(term_rankings,labels) = unsupervised.util.load_term_rankings( in_path )
 		m = unsupervised.rankings.term_rankings_size( term_rankings )
 		log.info( "Set has %d rankings covering up to %d terms" % ( len(term_rankings), m ) )
-		print unsupervised.rankings.format_term_rankings( term_rankings, labels, min(options.top,m) )
+		if options.long_display:
+			print( unsupervised.rankings.format_term_rankings_long( term_rankings, labels, min(options.top,m) ) )
+		else:
+			print( unsupervised.rankings.format_term_rankings( term_rankings, labels, min(options.top,m) ) )
 
 # --------------------------------------------------------------
 

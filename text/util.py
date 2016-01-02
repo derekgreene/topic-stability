@@ -6,7 +6,7 @@ def preprocess( docs, stopwords, min_df = 3, min_term_length = 2, ngram_range = 
 	"""
 	Preprocess a list containing text documents stored as strings.
 	"""
-	token_pattern=ur"\b\w\w+\b"
+	token_pattern=r"\b\w\w+\b"
 	token_pattern = re.compile(token_pattern, re.U)
 
 	def custom_tokenizer( s ):
@@ -36,12 +36,12 @@ def load_stopwords( inpath = "text/stopwords.txt"):
 	with open(inpath) as f:
 		lines = f.readlines()
 		for l in lines:
-			l = l.strip()
+			l = l.strip().lower()
 			if len(l) > 0:
 				stopwords.add(l)
 	return stopwords
 
-def save_corpus( out_prefix, X, terms, doc_ids, classes ):
+def save_corpus( out_prefix, X, terms, doc_ids, classes = None ):
 	"""
 	Save a pre-processed scikit-learn corpus and associated metadata using Joblib.
 	"""

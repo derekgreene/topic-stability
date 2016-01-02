@@ -69,7 +69,7 @@ def load_nmf_factors( in_path ):
 	"""
 	Load a NMF factorization result using Joblib.
 	"""
-	(W,H,doc_ids,summary) = joblib.load( in_path )
+	(W,H,doc_ids) = joblib.load( in_path )
 	return (W,H,doc_ids)
 
 def save_partition( out_path, partition, doc_ids ):
