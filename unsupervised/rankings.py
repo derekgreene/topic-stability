@@ -139,8 +139,8 @@ def format_term_rankings( term_rankings, labels = None, top = 10 ):
 		for label in labels:
 			header.append(label)	
 	tab = PrettyTable(header)
-	for label in labels:
-		tab.align[label] = "l"
+	for field in header:
+		tab.align[field] = "l"
 	# add body
 	for pos in range(top):
 		row = [ str(pos+1) ]
