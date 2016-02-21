@@ -68,7 +68,7 @@ def main():
 		log.info( "Generated %d rankings covering up to %d terms" % ( len(term_rankings), unsupervised.rankings.term_rankings_size( term_rankings ) ) )
 		# Print out the top terms, if we want verbose output
 		if log_level <= 10 and options.top > 0:
-			print unsupervised.rankings.format_term_rankings( term_rankings, top = options.top )
+			print( unsupervised.rankings.format_term_rankings( term_rankings, top = options.top ))
 
 		log.info( "Writing results to %s" % ( dir_out_k ) )
 		# Write term rankings
