@@ -132,7 +132,7 @@ class MalletLDA:
 			]
 		log.debug( "Running Mallet (k=%d alpha=%.3f beta=%.3f optimize_interval=%d threads=%d seed=%s)... " % ( k, self.lda_alpha, self.lda_beta, self.optimize_interval, self.num_threads, self.seed ) )
 		mallet_cmd = ' '.join([str(x) for x in mallet_args])
-		#print mallet_cmd
+		#log.debug( mallet_cmd )
 		call(mallet_cmd, shell=True)
 		return (mallet_terms_path, mallet_docs_path, mallet_weights_path)
 
@@ -172,7 +172,7 @@ class MalletLDA:
 		"""
 		Implements the term re-weighting method proposed by Blei and Lafferty.
 		"""
-		print "Reweighting terms  ..."
+		log.debug( "Reweighting terms  ..." )
 		# Parse weights for all terms and topics
 		W = np.zeros( (num_terms, k) )
 		with open(mallet_weights_path) as f:
