@@ -55,7 +55,6 @@ def load_term_rankings( in_path ):
 	"""
 	Load a list of multiple term rankings using Joblib.
 	"""
-	#print "Loading term rankings from %s ..." % in_path
 	(term_rankings,labels) = joblib.load( in_path )
 	return (term_rankings,labels)
 
