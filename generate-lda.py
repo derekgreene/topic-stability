@@ -72,10 +72,9 @@ def main():
 			impl.seed = options.seed + r
 			try:
 				impl.apply( S, k )
-			except Exception, error:	
-				print str(error)
-				print "Skipping LDA for run=%d k=%d" % (r,k)
-				continue			
+			except Exception as error:
+				log.exception("Failed to apply LDA: %s" % str(error) )
+				sys.exit(1)
 			# Get term rankings for each topic
 			term_rankings = []
 			for topic_index in range(k):		

@@ -1,4 +1,4 @@
-import os, os.path, tempfile
+import os, os.path, tempfile, shutil
 import logging as log
 from subprocess import call
 import numpy as np
@@ -19,6 +19,7 @@ class MalletLDA:
 		self.lda_beta = beta
 		self.optimize_interval = 10
 		self.rerank_terms = rerank_terms
+		self.delete_temp_files = True
 		# state
 		self.partition = None
 
@@ -45,6 +46,13 @@ class MalletLDA:
 			self.topic_rankings = self.__parse_topics( mallet_terms_path )
 		log.debug( "Generated ranking set with %d topic rankings" % len(self.topic_rankings) )
 		self.partition =  self.__parse_document_weights( X.shape[0], mallet_docs_path )
+		# now tidy up, if required
+		if self.delete_temp_files:
+			try:
+				log.debug( "Removing temporary directory %s" % dir_tmp )
+				shutil.rmtree(dir_tmp)
+			except OSError as e:
+				log.warning( "Failed to remove temporary directory - %s" % str(e) )
 
 	def rank_terms( self, topic_index, top = -1 ):
 		"""
@@ -65,7 +73,7 @@ class MalletLDA:
 		"""
 		Write documents to temporary file, for parsing by Mallet.
 		"""
-		log.debug( "Writing temporary files to", dir_tmp )
+		log.debug( "Writing temporary files to %s" % dir_tmp )
 		# Write documents, one per line
 		corpus_path = os.path.join( dir_tmp, "corpus.txt" )
 		f = open( corpus_path, "w")
@@ -153,7 +161,8 @@ class MalletLDA:
 		return rankings
 
 	def __parse_document_weights( self, num_docs, mallet_docs_path ):
-		partition = list(0 for i in xrange(num_docs)) 
+		partition = list(0 for i in range(num_docs)) 
+		log.debug("Reading LDA document weights from %s" % mallet_docs_path)
 		with open(mallet_docs_path) as f:
 			lines = [line.rstrip() for line in f]
 			for l in lines:
@@ -162,10 +171,13 @@ class MalletLDA:
 				parts = l.split("\t")
 				if len(parts) < 3:
 					continue
-				# assume the Mallet file is sorted
 				doc_index = int(parts[0])
-				best_topic_index = int (parts[2])
-				partition[doc_index] = best_topic_index
+				# find the topic with the max weight
+				weights = []
+				for p in parts[2:]:
+					weights.append( float(p) )
+				weights = np.array(weights)
+				partition[doc_index] = weights.argmax()
 		return partition
 
 	def __rerank_terms( self, num_terms, k, mallet_weights_path, eps = 1e-9 ):

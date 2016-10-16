@@ -55,7 +55,7 @@ def main():
 		impl.seed = options.seed
 		try:
 			impl.apply( X, k )
-		except Exception, error:
+		except Exception as error:
 			log.error("Failed to apply LDA: %s" % str(error) )
 			log.error("Skipping LDA for k=%d" % k )
 			continue
